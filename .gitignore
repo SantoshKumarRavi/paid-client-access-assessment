@@ -8,3 +8,4 @@ tmp/
 test-results/
 *.log
 output/pdf/
+.vercel
