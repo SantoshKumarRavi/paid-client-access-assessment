@@ -163,6 +163,8 @@ The live and outage tests require deliberately prepared fixtures and test servic
 
 ## Database design: tables and relationships
 
+Architecture and flow diagrams are documented in [HLD, LLD, and user flows](docs/architecture.md). The dedicated [database schema guide](docs/database-schema.md) includes the ER diagram, table relationships, RLS access matrix, and migration summary.
+
 The `pac_` prefix keeps this assessment's schema isolated from unrelated tables in a Supabase project.
 
 | Table | One row represents | Why it exists |
