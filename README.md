@@ -28,6 +28,14 @@ npx tsx scripts/seed.ts --prefix=interview-
 
 Sign in as `interview-alice@example.test` with the same local demo password. Each prefix creates distinct fictional Supabase identities and matching Developer Edition Deals. The seed is safe to rerun with the same prefix. It never resets existing identities or purchases.
 
+To provision a numbered group of test accounts for a walkthrough:
+
+```powershell
+npx tsx scripts/seed.ts --prefix=hr- --count=10
+```
+
+This creates `hr-test-01@example.test` through `hr-test-10@example.test`, with matching Developer Edition Deals. They are initially unpaid, so each can independently exercise the real Stripe TEST Checkout. All seeded demo accounts use the local `DEMO_PASSWORD` value. The `--count` option accepts 1-50 and can be safely rerun with the same prefix; it does not reset existing users or purchases. The seed writes the resulting identities and Deal IDs to ignored `tmp/demo-clients.json`.
+
 ## Vercel demo deployment
 
 The project supports Vercel's Node.js function runtime. React assets build to `dist`; the catch-all API function exports the same Express application. Vercel cannot keep the local interval worker alive, so the paid webhook makes the initial Zoho attempt after the Supabase fulfillment transaction commits. Failed CRM work stays durable and can be retried from the signed-in portal. A protected Vercel Cron Job drains due outbox work once daily on the Hobby plan; Vercel Hobby only permits daily schedules. On a plan that supports more frequent Cron schedules, change the cron expression in `vercel.json` and redeploy.

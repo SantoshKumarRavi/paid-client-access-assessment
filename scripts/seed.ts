@@ -14,15 +14,28 @@ const prefix =
   process.argv.find((arg) => arg.startsWith("--prefix="))?.slice(9) ??
   process.env.DEMO_EMAIL_PREFIX ??
   "";
+const countOption = process.argv.find((arg) => arg.startsWith("--count="));
+const count = countOption ? Number(countOption.slice(8)) : undefined;
 if (!/^[a-z0-9-]*$/.test(prefix))
   throw Error(
     "Client prefix must contain lowercase letters, numbers or hyphens",
   );
-for (const [alias, name] of [
-  ["alice", "Alice Morgan"],
-  ["bob", "Bob Parker"],
-  ["charlie", "Charlie Reed"],
-]) {
+if (
+  count !== undefined &&
+  (!Number.isInteger(count) || count < 1 || count > 50)
+)
+  throw Error("Client count must be an integer between 1 and 50");
+const fixtures: [string, string][] = count
+  ? Array.from({ length: count }, (_, index) => {
+      const number = String(index + 1).padStart(2, "0");
+      return [`test-${number}`, `HR Test Client ${number}`];
+    })
+  : [
+      ["alice", "Alice Morgan"],
+      ["bob", "Bob Parker"],
+      ["charlie", "Charlie Reed"],
+    ];
+for (const [alias, name] of fixtures) {
   const email = `${prefix}${alias}@example.test`;
   let user: any;
   for (let page = 1; !user; page++) {
