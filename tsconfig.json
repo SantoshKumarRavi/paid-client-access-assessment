@@ -7,6 +7,8 @@
     "strict": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
+    "allowJs": true,
+    "checkJs": false,
     "skipLibCheck": true,
     "allowImportingTsExtensions": true,
     "noEmit": true,

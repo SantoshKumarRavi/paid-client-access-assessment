@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsx watch server/index.ts",
     "start": "tsx server/index.ts",
-    "build": "tsc --noEmit && vite build",
+    "build": "npm run build:server && tsc --noEmit && vite build",
+    "build:server": "esbuild server/app.ts --bundle --packages=external --platform=node --format=esm --target=node24 --outfile=server-dist/app.js",
     "test": "tsx --test tests/*.test.ts",
     "test:live": "tsx scripts/live-test.ts",
     "seed": "tsx scripts/seed.ts",
@@ -35,6 +36,7 @@
     "@types/react-dom": "^19.2.2",
     "@types/supertest": "^6.0.3",
     "@vitejs/plugin-react": "^5.0.4",
+    "esbuild": "^0.28.2",
     "prettier": "^3.9.10",
     "supertest": "^7.1.4",
     "tsx": "^4.20.6",
