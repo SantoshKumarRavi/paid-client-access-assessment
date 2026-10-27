@@ -8,27 +8,31 @@ The browser never decides that a payment succeeded. It starts checkout through t
 
 ```mermaid
 flowchart LR
-    Client[Client browser]
-    Auth[Supabase Auth]
-    API[Portal API<br/>Express on Vercel or local Node]
-    Stripe[Stripe TEST<br/>Checkout and signed webhook]
-    DB[(Supabase Postgres<br/>RLS, purchases, entitlements, CRM outbox)]
-    Worker[CRM sync worker<br/>local timer, Vercel webhook, or Cron]
-    Zoho[Zoho CRM Developer Edition<br/>Deals]
+    subgraph ClientLayer[Client]
+        Browser[Client browser]
+    end
+    subgraph ServerLayer[Portal server]
+        API[Express API]
+        Worker[CRM sync worker]
+        API --> Worker
+    end
+    subgraph Services[Connected services]
+        Auth[Supabase Auth]
+        DB[(Supabase Postgres<br/>RLS, purchases, entitlements, outbox)]
+        Stripe[Stripe TEST<br/>hosted Checkout]
+        Zoho[Zoho CRM Developer Edition<br/>Deals]
+    end
 
-    Client -->|Sign in, read catalog/status| Auth
-    Client -->|Bearer session: checkout, status, document| API
-    API -->|Validate session / user-scoped reads| Auth
-    API -->|RPCs, service role on server only| DB
-    API -->|Create Checkout Session| Stripe
-    Stripe -->|checkout.session.completed<br/>signed raw request| API
-    API -->|Verify signature then atomic fulfillment| DB
-    Client -->|Read content using session + RLS| DB
-    API -->|Claim durable job| DB
-    Worker -->|Read/mark matching Deal| Zoho
-    Worker -->|Record synced/pending result| DB
-    Client -->|Show access and CRM status| API
+    Browser --> API
+    Browser --> DB
+    API --> Auth
+    API <--> Stripe
+    API --> DB
+    Worker --> DB
+    Worker --> Zoho
 ```
+
+The arrows show integration boundaries. Their exact request order is in the sequence diagrams below.
 
 ### Trust boundaries and ownership
 
@@ -53,6 +57,7 @@ sequenceDiagram
     participant Auth as Supabase Auth
     participant DB as Supabase Postgres
     participant Stripe
+    participant Worker as CRM sync worker
     participant CRM as Zoho CRM
 
     User->>Browser: Sign in
@@ -62,24 +67,27 @@ sequenceDiagram
     Browser->>API: POST /api/checkout + session token
     API->>Auth: Validate token and resolve user ID
     API->>DB: pac_begin_purchase(user, document, environment)
-    Note over DB: Resolve immutable Zoho Deal mapping;<br/>reject already entitled; reuse open checkout
+    Note over DB: Resolve immutable Zoho Deal mapping and reject already entitled
+    Note over DB: Reuse an existing open checkout when available
     DB-->>API: Purchase ID, amount, currency, Deal ID
     API->>Stripe: Create/reuse Checkout Session with stable IDs in metadata
-    Stripe-->>Browser: Hosted Checkout URL
+    Stripe-->>API: Hosted Checkout URL
+    API-->>Browser: Checkout URL
     User->>Stripe: Complete test card payment
     Stripe->>API: checkout.session.completed + Stripe-Signature
-    API->>API: Verify signature over raw bytes; validate paid session
+    API->>API: Verify signature over raw bytes and validate the paid session
     API->>DB: pac_fulfill(event, purchase, session, user, Deal, doc, amount, currency, env)
-    Note over DB: One transaction: validate snapshot;<br/>dedupe event; mark paid; grant entitlement;<br/>enqueue one CRM job
+    Note over DB: One transaction validates the payment snapshot and deduplicates the event
+    Note over DB: It marks the purchase paid, grants access, and enqueues one CRM job
     DB-->>API: Fulfilled or recognized duplicate
-    API-->>Browser: Stripe redirects to portal (not the authority)
+    Stripe-->>Browser: Redirect to portal (navigation only, not payment proof)
     Browser->>DB: Read purchase/entitlement/content with user session
     DB-->>Browser: Only rows permitted by RLS
     opt First CRM attempt
-        API->>DB: Claim job with lease and fencing token
-        API->>CRM: Read Deal, then conditionally mark paid
-        CRM-->>API: Update result or error
-        API->>DB: Finish as synced or pending (token must still match)
+        Worker->>DB: Claim job with lease and fencing token
+        Worker->>CRM: Read Deal, then conditionally mark paid
+        CRM-->>Worker: Update result or error
+        Worker->>DB: Finish as synced or pending (token must still match)
     end
 ```
 
@@ -94,11 +102,12 @@ sequenceDiagram
 
     Trigger->>Worker: Process one job (optionally a purchase ID)
     Worker->>DB: pac_claim_job
-    Note over DB: Lock one due row with SKIP LOCKED;<br/>set processing, 2-minute lease, new token
+    Note over DB: Lock one due row with SKIP LOCKED
+    Note over DB: Set processing status, a two-minute lease, and a new token
     DB-->>Worker: Purchase + Deal + lease token
     Worker->>Zoho: GET Deal (Description, Stage, Modified_Time)
     alt Marker already exists and stage is paid
-        Zoho-->>Worker: Already reconciled; skip PUT
+        Zoho-->>Worker: Already reconciled, skip PUT
     else Deal needs update
         Worker->>Zoho: Conditional PUT with If-Unmodified-Since
         Zoho-->>Worker: Success or failure
@@ -107,7 +116,8 @@ sequenceDiagram
     alt Success and token still current
         DB-->>Worker: synced
     else Failure and token still current
-        Note over DB: Store error; set pending and next retry<br/>with exponential backoff, capped at 1 hour
+        Note over DB: Store the error and schedule the next retry with exponential backoff
+        Note over DB: Backoff is capped at one hour
         DB-->>Worker: pending
     else Lease expired and another worker reclaimed it
         DB-->>Worker: Reject stale finish (lease_lost)
@@ -158,7 +168,7 @@ flowchart TD
     A[Browser requests document or purchase status] --> B[Supabase validates user session]
     B --> C{Valid authenticated user?}
     C -->|No| D[Reject request]
-    C -->|Yes| E[Query using user session; RLS evaluates auth.uid()]
+    C -->|Yes| E["Query using user session; RLS evaluates auth.uid()"]
     E --> F{Row belongs to this user?}
     F -->|No| G[Return no row / deny access]
     F -->|Yes| H{Document content requested?}
@@ -185,9 +195,9 @@ flowchart TD
     I --> J
     J --> K[Read Deal and reconcile marker]
     K --> L{Already updated?}
-    L -->|Yes| D
+    L -->|Yes| O[Already updated, mark job synced]
     L -->|No| M[Conditional Zoho update]
-    M --> C
+    M --> N[Record success or keep job pending for retry]
 ```
 
 For the table-by-table schema, constraints, and RLS design, see [Database schema](database-schema.md).
