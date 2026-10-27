@@ -1,0 +1,44 @@
+{
+  "name": "paid-client-access",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch server/index.ts",
+    "start": "tsx server/index.ts",
+    "build": "tsc --noEmit && vite build",
+    "test": "tsx --test tests/*.test.ts",
+    "test:live": "tsx scripts/live-test.ts",
+    "seed": "tsx scripts/seed.ts",
+    "crm:retry": "tsx scripts/retry.ts",
+    "typecheck": "tsc --noEmit",
+    "stripe:listen": "node scripts/stripe-listen.mjs",
+    "test:outage": "tsx scripts/outage-test.ts",
+    "format:check": "prettier --check server web scripts tests vite.config.ts"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.80.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "stripe": "^19.1.0",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.3.14",
+    "@types/express": "^5.0.5",
+    "@types/node": "^22.18.12",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "@types/supertest": "^6.0.3",
+    "@vitejs/plugin-react": "^5.0.4",
+    "prettier": "^3.9.10",
+    "supertest": "^7.1.4",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.12"
+  }
+}

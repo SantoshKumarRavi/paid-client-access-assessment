@@ -1,0 +1,8 @@
+{
+  "testedAt": "2026-10-27T13:59:53.648Z",
+  "purchaseId": "3a266dcb-8a01-4001-9a20-8cb208cced69",
+  "status": "pending",
+  "lastError": "CRM HTTP 503",
+  "documentReadable": true,
+  "attempts": 1
+}

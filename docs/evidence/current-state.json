@@ -1,0 +1,109 @@
+{
+  "verifiedAt": "2026-10-27T14:18:45.987Z",
+  "environment": "developer",
+  "providerApi": "https://developer.zohoapis.in",
+  "offlineTests": 21,
+  "clients": [
+    {
+      "alias": "alice",
+      "name": "Alice Morgan",
+      "email": "dev-alice@example.test",
+      "userId": "89259a51-c32b-4936-947c-0d22c9e0f36c",
+      "zohoDealId": "30144000000176004",
+      "zohoEnvironment": "developer"
+    },
+    {
+      "alias": "bob",
+      "name": "Bob Parker",
+      "email": "dev-bob@example.test",
+      "userId": "4dd115f0-f784-40ba-a190-9c4d458664c3",
+      "zohoDealId": "30144000000175317",
+      "zohoEnvironment": "developer"
+    },
+    {
+      "alias": "charlie",
+      "name": "Charlie Reed",
+      "email": "dev-charlie@example.test",
+      "userId": "036f293f-e434-419d-8635-bb8327b9b848",
+      "zohoDealId": "30144000000176007",
+      "zohoEnvironment": "developer"
+    }
+  ],
+  "purchases": [
+    {
+      "id": "76c97ca7-d7aa-433a-ad84-325aa7518b64",
+      "user_id": "89259a51-c32b-4936-947c-0d22c9e0f36c",
+      "document_id": "11111111-1111-4111-8111-111111111111",
+      "zoho_deal_id": "30144000000176004",
+      "amount_cents": 1900,
+      "currency": "usd",
+      "status": "paid",
+      "stripe_session_id": "cs_test_a13hssU07wEF5EanFPtWLpG1i3xqvlP5sxMqtGRb7SyEm1j2xCLP4H9RpH",
+      "checkout_expires_at": "2026-10-28T14:05:07+00:00",
+      "created_at": "2026-10-27T14:05:07.368241+00:00",
+      "paid_at": "2026-10-27T14:07:12.952799+00:00",
+      "zoho_environment": "developer"
+    },
+    {
+      "id": "cc35aa0b-e05e-441b-9e25-bca3d4984d6b",
+      "user_id": "036f293f-e434-419d-8635-bb8327b9b848",
+      "document_id": "11111111-1111-4111-8111-111111111111",
+      "zoho_deal_id": "30144000000176007",
+      "amount_cents": 1900,
+      "currency": "usd",
+      "status": "paid",
+      "stripe_session_id": "cs_test_a182UUKS3sryNqMjUtzjeKBvHSFGUxkqZqLHFbYKMTedJU67qJFpfytYwG",
+      "checkout_expires_at": "2026-10-28T14:11:01+00:00",
+      "created_at": "2026-10-27T14:11:01.482331+00:00",
+      "paid_at": "2026-10-27T14:16:27.767631+00:00",
+      "zoho_environment": "developer"
+    }
+  ],
+  "jobs": [
+    {
+      "purchase_id": "76c97ca7-d7aa-433a-ad84-325aa7518b64",
+      "user_id": "89259a51-c32b-4936-947c-0d22c9e0f36c",
+      "status": "synced",
+      "attempts": 1,
+      "next_attempt_at": "2026-10-27T14:07:23.895666+00:00",
+      "lease_until": null,
+      "lease_token": null,
+      "last_error": null,
+      "synced_at": "2026-10-27T14:07:13.895666+00:00"
+    },
+    {
+      "purchase_id": "cc35aa0b-e05e-441b-9e25-bca3d4984d6b",
+      "user_id": "036f293f-e434-419d-8635-bb8327b9b848",
+      "status": "synced",
+      "attempts": 2,
+      "next_attempt_at": "2026-10-27T14:18:15.694991+00:00",
+      "lease_until": null,
+      "lease_token": null,
+      "last_error": null,
+      "synced_at": "2026-10-27T14:17:55.694991+00:00"
+    }
+  ],
+  "deals": [
+    {
+      "Modified_Time": "2026-10-27T19:37:13+05:30",
+      "Description": "Fictional assessment client. Supabase user: 89259a51-c32b-4936-947c-0d22c9e0f36c. Stripe TEST purchases only.\n[PAC_PAID:76c97ca7-d7aa-433a-ad84-325aa7518b64] Stripe test purchase cs_test_a13hssU07wEF5EanFPtWLpG1i3xqvlP5sxMqtGRb7SyEm1j2xCLP4H9RpH",
+      "Deal_Name": "PAC Assessment - Alice Morgan - 89259a51",
+      "Stage": "Closed Won",
+      "id": "30144000000176004"
+    },
+    {
+      "Modified_Time": "2026-10-27T19:33:12+05:30",
+      "Description": "Fictional assessment client. Supabase user: 4dd115f0-f784-40ba-a190-9c4d458664c3. Stripe TEST purchases only.",
+      "Deal_Name": "PAC Assessment - Bob Parker - 4dd115f0",
+      "Stage": "Qualification",
+      "id": "30144000000175317"
+    },
+    {
+      "Modified_Time": "2026-10-27T19:47:55+05:30",
+      "Description": "Fictional assessment client. Supabase user: 036f293f-e434-419d-8635-bb8327b9b848. Stripe TEST purchases only.\n[PAC_PAID:cc35aa0b-e05e-441b-9e25-bca3d4984d6b] Stripe test purchase cs_test_a182UUKS3sryNqMjUtzjeKBvHSFGUxkqZqLHFbYKMTedJU67qJFpfytYwG",
+      "Deal_Name": "PAC Assessment - Charlie Reed - 036f293f",
+      "Stage": "Closed Won",
+      "id": "30144000000176007"
+    }
+  ]
+}

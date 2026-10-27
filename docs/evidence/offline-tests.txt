@@ -1,0 +1,140 @@
+
+> paid-client-access@1.0.0 test
+> tsx --test tests/*.test.ts
+
+TAP version 13
+# Subtest: unpaid clients cannot read premium content
+ok 1 - unpaid clients cannot read premium content
+  ---
+  duration_ms: 2153.5302
+  type: 'test'
+  ...
+# Subtest: CRM environment is validated before checkout and workers claim only their environment
+ok 2 - CRM environment is validated before checkout and workers claim only their environment
+  ---
+  duration_ms: 39.3236
+  type: 'test'
+  ...
+# Subtest: checkout reuses one pending purchase and immutable mapping
+ok 3 - checkout reuses one pending purchase and immutable mapping
+  ---
+  duration_ms: 29.7308
+  type: 'test'
+  ...
+# Subtest: mismatched amount atomically rolls back receipt and access
+ok 4 - mismatched amount atomically rolls back receipt and access
+  ---
+  duration_ms: 10.9215
+  type: 'test'
+  ...
+# Subtest: null identity and wrong environment cannot bypass transactional payment validation
+ok 5 - null identity and wrong environment cannot bypass transactional payment validation
+  ---
+  duration_ms: 10.8886
+  type: 'test'
+  ...
+# Subtest: valid payment grants access, event replay and alternate event do not duplicate work
+ok 6 - valid payment grants access, event replay and alternate event do not duplicate work
+  ---
+  duration_ms: 37.2607
+  type: 'test'
+  ...
+# Subtest: other client cannot retrieve paid client purchase, job, entitlement or document
+ok 7 - other client cannot retrieve paid client purchase, job, entitlement or document
+  ---
+  duration_ms: 36.2948
+  type: 'test'
+  ...
+# Subtest: client cannot self grant access, change mapping, price or call server RPCs
+ok 8 - client cannot self grant access, change mapping, price or call server RPCs
+  ---
+  duration_ms: 19.3601
+  type: 'test'
+  ...
+# Subtest: CRM leasing prevents concurrent claim; failure retains access; fencing rejects stale completion
+ok 9 - CRM leasing prevents concurrent claim; failure retains access; fencing rejects stale completion
+  ---
+  duration_ms: 39.1337
+  type: 'test'
+  ...
+# Subtest: expired leases recover after worker crash
+ok 10 - expired leases recover after worker crash
+  ---
+  duration_ms: 24.8155
+  type: 'test'
+  ...
+# Subtest: public config exposes only publishable configuration and security headers
+ok 11 - public config exposes only publishable configuration and security headers
+  ---
+  duration_ms: 50.8115
+  type: 'test'
+  ...
+# Subtest: private mutations require a bearer session
+ok 12 - private mutations require a bearer session
+  ---
+  duration_ms: 44.6656
+  type: 'test'
+  ...
+# Subtest: cross-origin mutations are rejected
+ok 13 - cross-origin mutations are rejected
+  ---
+  duration_ms: 8.6179
+  type: 'test'
+  ...
+# Subtest: webhook endpoint rejects unsigned and altered bytes; acknowledges irrelevant signed event
+ok 14 - webhook endpoint rejects unsigned and altered bytes; acknowledges irrelevant signed event
+  ---
+  duration_ms: 24.0781
+  type: 'test'
+  ...
+# Subtest: Stripe validates exact raw bytes and rejects forged, stale or missing signatures
+ok 15 - Stripe validates exact raw bytes and rejects forged, stale or missing signatures
+  ---
+  duration_ms: 5.848
+  type: 'test'
+  ...
+# Subtest: paid checkout maps stable IDs; delayed success is handled
+ok 16 - paid checkout maps stable IDs; delayed success is handled
+  ---
+  duration_ms: 4.7547
+  type: 'test'
+  ...
+# Subtest: unpaid checkout and unrelated events never grant access
+ok 17 - unpaid checkout and unrelated events never grant access
+  ---
+  duration_ms: 0.2491
+  type: 'test'
+  ...
+# Subtest: reject live mode, wrong reference, missing IDs, invalid amount and wrong session mode
+ok 18 - reject live mode, wrong reference, missing IDs, invalid amount and wrong session mode
+  ---
+  duration_ms: 1.6605
+  type: 'test'
+  ...
+# Subtest: CRM write preserves existing description, uses conditional version and suppresses workflows
+ok 19 - CRM write preserves existing description, uses conditional version and suppresses workflows
+  ---
+  duration_ms: 101.2169
+  type: 'test'
+  ...
+# Subtest: ambiguous previous success is reconciled without a second update
+ok 20 - ambiguous previous success is reconciled without a second update
+  ---
+  duration_ms: 0.8598
+  type: 'test'
+  ...
+# Subtest: Zoho HTTP failures and per-record failures remain errors for retry
+ok 21 - Zoho HTTP failures and per-record failures remain errors for retry
+  ---
+  duration_ms: 6.4015
+  type: 'test'
+  ...
+1..21
+# tests 21
+# suites 0
+# pass 21
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4211.0734

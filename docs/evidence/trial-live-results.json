@@ -1,0 +1,48 @@
+{
+  "testedAt": "2026-10-27T13:47:50.299Z",
+  "results": [
+    {
+      "test": "Alice paid purchase and premium document are readable through public key + client JWT",
+      "status": "passed"
+    },
+    {
+      "test": "Bob cannot retrieve Alice purchase or premium document",
+      "status": "passed"
+    },
+    {
+      "test": "Bob cannot grant an entitlement or call privileged RPC",
+      "status": "passed"
+    },
+    {
+      "test": "Retry endpoint enforces ownership and bearer authentication",
+      "status": "passed"
+    },
+    {
+      "test": "Stripe API confirms actual test Checkout payment and stable reference",
+      "status": "passed",
+      "detail": {
+        "sessionId": "cs_test_a1etdensT1ytDndV3LS84lVPcANJ7WDIfbg69FE4ZSFGHGnSSNHAdSSIb5",
+        "purchaseId": "3a6a7823-31a8-413f-a4e4-13ab0d025d1f"
+      }
+    },
+    {
+      "test": "Zoho Deal reflects the same purchase and existing description is retained",
+      "status": "passed",
+      "detail": {
+        "dealId": "1477426000000554005"
+      }
+    },
+    {
+      "test": "Concurrent replays of real Stripe event do not add entitlement, job or CRM update",
+      "status": "passed",
+      "detail": {
+        "stripeEventId": "evt_1UVAhDJHJn3SOTPWepqDDnLv",
+        "concurrentReplays": 5
+      }
+    },
+    {
+      "test": "Forged webhook fails without state change",
+      "status": "passed"
+    }
+  ]
+}

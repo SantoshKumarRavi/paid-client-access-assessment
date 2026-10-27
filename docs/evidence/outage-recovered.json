@@ -1,0 +1,12 @@
+{
+  "verifiedAt": "2026-10-27T14:18:45.991Z",
+  "purchase_id": "cc35aa0b-e05e-441b-9e25-bca3d4984d6b",
+  "user_id": "036f293f-e434-419d-8635-bb8327b9b848",
+  "status": "synced",
+  "attempts": 2,
+  "next_attempt_at": "2026-10-27T14:18:15.694991+00:00",
+  "lease_until": null,
+  "lease_token": null,
+  "last_error": null,
+  "synced_at": "2026-10-27T14:17:55.694991+00:00"
+}
